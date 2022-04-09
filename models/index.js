@@ -5,7 +5,7 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+const config = require("../config/devConf");
 const db = {};
 
 let sequelize;
@@ -14,7 +14,7 @@ let sequelize;
 // } else {
 //   sequelize = new Sequelize(config.database, config.username, config.password, config);
 // }
-sequelize = new Sequelize("postgres://hencjotg:f4SVbEvSmbahBJxl-XVGGBJCri-ofTlK@rogue.db.elephantsql.com/hencjotg")
+sequelize = new Sequelize(config.DB_URL)
 fs
   .readdirSync(__dirname)
   .filter(file => {
