@@ -1,8 +1,10 @@
 const { Http } = require('@status/codes');
 const bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
+const { EMIT } = require('../../config/constants');
 const config = require('../../config/devConf');
-
+const { Emitter } = require("../../startups/listeners");
+const userRepository = require('../user/user_repository');
 /*
 Get user input.
 Validate user input.
@@ -15,13 +17,32 @@ const authRepository = require('./auth_repository');
 
 exports.login = async (req, res, next) => {
     const { name, email, password } = req.body;
+    const userAuth = await authRepository.findOne({ email });
+    if (!userAuth) return res.status(Http.NotFound).json({
+        message: "User with this email does not exist"
+    });
+    const isValid = await bcrypt.compare(password, userAuth.password);
+
+    if (!isValid) {
+        return res.status(Http.Forbidden).json({
+            message: "Invalid username or password"
+        });
+    }
+    let user = await userRepository.findOne({ email });
+    user = JSON.parse(JSON.stringify(user));
+    console.log("User json ", user);
+
+    const token = jwt.sign(user, config.TOKEN_KEY, { expiresIn: "2h" });
+    user.token = token;
+
+    res.json({ message: "Login success", data: user });
 }
 
 exports.signup = async (req, res, next) => {
     const { name, email, password } = req.body;
     let user = await authRepository.findOne({ email });
     if (user) {
-        res.status(Http.BadRequest).json({
+        return res.status(Http.BadRequest).json({
             message: "User already exists. Please login."
         });
     }
@@ -39,8 +60,8 @@ exports.signup = async (req, res, next) => {
         config.TOKEN_KEY,
         { expiresIn: "2h" }
     )
-
-    res.json(user);
+    Emitter.emit(EMIT.USER.CREATED, {name, email});
+    res.json({user, token});
 }
 
 exports.reset = async (req, res, next) => {

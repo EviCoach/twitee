@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config({});
 const {sequelize} = require('./models')
 const config = require("./config/devConf");
+require("./startups")
 const PORT = config.PORT ?? 3000;
 const app = express();
 app.use(cors());
