@@ -1,9 +1,16 @@
 {
-  "development": {
+  "developments": {
     "username": "hencjotg",
     "password": "f4SVbEvSmbahBJxl-XVGGBJCri-ofTlK",
     "database": "hencjotg",
     "host": "rogue.db.elephantsql.com",
+    "dialect": "postgres"
+  },
+  "development": {
+    "username": null,
+    "password": null,
+    "database": "twitee",
+    "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {

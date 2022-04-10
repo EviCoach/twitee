@@ -54,14 +54,11 @@ exports.signup = async (req, res, next) => {
     });
 
     console.log("Created user: ", user);
-
-    const token = jwt.sign(
-        { authId: user.uuid, email },
-        config.TOKEN_KEY,
-        { expiresIn: "2h" }
-    )
-    Emitter.emit(EMIT.USER.CREATED, {name, email});
-    res.json({user, token});
+    Emitter.emit(EMIT.USER.CREATED, { name, email });
+    res.json({
+        message: "User created",
+        data: user
+    });
 }
 
 exports.reset = async (req, res, next) => {
@@ -70,4 +67,21 @@ exports.reset = async (req, res, next) => {
 
 exports.code = async (req, res, next) => {
 
+}
+
+exports.verify = async (req, res, next) => {
+    const userId = req.params.userId;
+    if (!userId) {
+        return res.status(Http.BadRequest).json({
+            "error": "User with this id does not exist"
+        });
+    }
+
+   await userRepository.update({ userId: userId }, {
+        verified: true
+    });
+
+    return res.json({
+        message: "User verified successfully",
+    });
 }

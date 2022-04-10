@@ -50,8 +50,10 @@ class Repository {
         return this.Model.bulkCreate(data);
     }
 
-    update(condition, obj) {
-
+    update(condition, update) {
+        return this.Model.update(update, {
+            where: condition
+        })
     }
 }
 

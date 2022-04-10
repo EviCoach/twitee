@@ -8,16 +8,16 @@ module.exports = {
                 primaryKey: true,
                 type: DataTypes.INTEGER,
             },
-            uuid: {
+            postId: {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4,
             },
+            userId: {
+                type: DataTypes.UUID,
+                allowNull:false
+            },
             body: {
                 type: DataTypes.STRING,
-                allowNull: false,
-            },
-            userId: {
-                type: DataTypes.INTEGER,
                 allowNull: false,
             },
             createdAt: {

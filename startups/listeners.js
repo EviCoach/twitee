@@ -13,7 +13,7 @@ listener.on(EMIT.USER.CREATED, payload => {
             // send verfication
             const msg = {
             to: payload.email, // Change to your recipient
-            from: 'verify@twitee.com', // Change to your verified sender
+            from: 'evicoach@gmail.com', // Change to your verified sender
             subject: 'Verify your Twitee Account',
             text: 'Welcome to Twitee. A wonderful experience',
             html: '<a href=verifyurl> click here to verify your account</a>',

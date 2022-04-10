@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      uuid: {
+      userId: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
@@ -19,6 +19,12 @@ module.exports = {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
+      },
+      verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

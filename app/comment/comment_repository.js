@@ -3,7 +3,7 @@ const {Comment}= require("../../models");
 
 class CommentRepository extends Repository {
     constructor() {
-        super(Model);
+        super(Comment);
     };
 }
 

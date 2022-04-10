@@ -8,7 +8,15 @@ module.exports = {
                 primaryKey: true,
                 type: DataTypes.INTEGER,
             },
-            uuid: {
+            userId: {
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
+            },
+            commentId: {
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
+            },
+            postId: {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4,
             },
