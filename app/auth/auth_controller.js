@@ -46,6 +46,11 @@ exports.signup = async (req, res, next) => {
             message: "User already exists. Please login."
         });
     }
+    if (!user.verified) {
+        return res.status(Http.Forbidden).json({
+            error: "Please verify your account!"
+        });
+    }
     // Encrypt user password
     const hashedPassword = await bcrypt.hash(password, 10);
     user = await authRepository.create({
