@@ -1,4 +1,4 @@
-class Repository{
+class Repository {
     constructor(Model) {
         this.Model = Model;
     }
@@ -7,32 +7,51 @@ class Repository{
         return this.Model;
     }
 
+    create(obj) {
+        return this.Model.create(obj);
+    }
     findById(id) {
-        
+        return this.Model.findByPK(id);
     }
 
     findOne(condition = {}) {
-        
+        console.log("the model", this.Model);
+        return this.Model.findOne({
+            where: condition
+        });
+    }
+
+    findOrCreate(condition, obj) {
+        return this.Model.findOrCreate({
+            where: condition,
+            defaults: obj
+        });
     }
 
     all(condition) {
-        
+        return this.Model.findAll(condition);
     }
 
-    count() {
-        
+    count(condition) {
+        if (condition) {
+            return this.Model.count(condition);
+        }
+        return this.Model.count();
+
     }
 
-    delete() {
-        
+    delete(condition) {
+        return this.Model.destroy({
+            where: condition
+        });
     }
 
     massInsert(data = []) {
-        
+        return this.Model.bulkCreate(data);
     }
 
     update(condition, obj) {
-        
+
     }
 }
 

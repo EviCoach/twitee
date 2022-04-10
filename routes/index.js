@@ -10,9 +10,8 @@ fs
         return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
     })
     .forEach(file => {
-        const route = file.split('.').slice(0, -1).join('.');
-        const handler = path.join(__dirname, file);
+        const route = `/${file.split('.').slice(0, -1).join('.')}`;
+        const handler = `.${route}`;
         router.use(route, require(handler));
     });
-
 module.exports = router;

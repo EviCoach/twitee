@@ -1,16 +1,9 @@
 {
-  "developments": {
-    "username": "root",
-    "password": null,
-    "database": "database_development",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
   "development": {
-    "username": "root",
-    "password": null,
+    "username": "hencjotg",
+    "password": "f4SVbEvSmbahBJxl-XVGGBJCri-ofTlK",
     "database": "hencjotg",
-    "host": "postgres://hencjotg:f4SVbEvSmbahBJxl-XVGGBJCri-ofTlK@rogue.db.elephantsql.com/hencjotg",
+    "host": "rogue.db.elephantsql.com",
     "dialect": "postgres"
   },
   "test": {

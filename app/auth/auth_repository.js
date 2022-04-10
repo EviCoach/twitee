@@ -1,8 +1,10 @@
 const Repository = require("../../Repository");
-const Model = require("../../models/auth");
+const {Auth} = require("../../models");
 
 class AuthRepository extends Repository{
-    constructor(Model);
+    constructor() {
+        super(Auth);
+    };
 }
 
 module.exports = new AuthRepository();
