@@ -10,23 +10,16 @@ module.exports = (sequelize, DataTypes) => {
     static associate({ Post }) {
       // define association here
       this.hasMany(Post, {
-        foreignKey: {
-          name: "userId",
-          type: DataTypes.UUID
-        }, as: 'posts'
+        foreignKey: 'userId', as: 'posts'
       });
     }
 
     toJSON() {
-      return { ...this.get(), id: undefined }
+      return { ...this.get()}
     }
   }
   User.init(
     {
-      userId: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -44,10 +37,6 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: 'email must not be empty' },
           isEmail: { msg: 'Must be a valid email address' },
         },
-      },
-      verified: {
-        type: DataTypes.BOOLEAN,
-        defaultValue:false,
       }
     },
     {

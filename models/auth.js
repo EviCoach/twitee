@@ -23,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4,
             },
+            verified: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false,
+                allowNull: false
+            },
             email: {
                 type: DataTypes.STRING,
                 allowNull: false,

@@ -2,6 +2,7 @@ const { Http } = require('@status/codes');
 const Joi = require('joi');
 
 exports.add = async (req, res, next) => {
+    console.log("Add validation running")
     try {
         const schema = Joi.object({
             body: Joi.string().required(),
@@ -10,6 +11,7 @@ exports.add = async (req, res, next) => {
 
         const value = schema.validate(req.body, { abortEarly: false });
         // console.log("Validation: ", JSON.stringify(value.error.details));
+        console.log(value, body, userId);
         if (value && value.error) {
             const errors = value.error.details.map((detail) => {
                 return { key: detail.path[0], message: detail.message.replace(/['"]/g, '') }

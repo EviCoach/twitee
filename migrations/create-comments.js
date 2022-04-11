@@ -9,16 +9,11 @@ module.exports = {
                 type: DataTypes.INTEGER,
             },
             userId: {
-                type: DataTypes.UUID,
-                defaultValue: DataTypes.UUIDV4,
-            },
-            commentId: {
-                type: DataTypes.UUID,
-                defaultValue: DataTypes.UUIDV4,
+                type: DataTypes.INTEGER,
             },
             postId: {
-                type: DataTypes.UUID,
-                defaultValue: DataTypes.UUIDV4,
+                type: DataTypes.INTEGER,
+                allowNull:false
             },
             body: {
                 type: DataTypes.STRING,

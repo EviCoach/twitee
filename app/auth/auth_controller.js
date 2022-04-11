@@ -1,10 +1,11 @@
 const { Http } = require('@status/codes');
 const bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const { EMIT } = require('../../config/constants');
 const config = require('../../config/devConf');
 const { Emitter } = require("../../startups/listeners");
 const userRepository = require('../user/user_repository');
+
 /*
 Get user input.
 Validate user input.
@@ -13,6 +14,7 @@ Encrypt the user password.
 Create a user in our database.
 And finally, create a signed JWT token.
 */
+
 const authRepository = require('./auth_repository');
 
 exports.login = async (req, res, next) => {
@@ -21,6 +23,11 @@ exports.login = async (req, res, next) => {
     if (!userAuth) return res.status(Http.NotFound).json({
         message: "User with this email does not exist"
     });
+    if (!userAuth.verified) {
+        return res.status(Http.Forbidden).json({
+            error: "Please verify your account!"
+        });
+    }
     const isValid = await bcrypt.compare(password, userAuth.password);
 
     if (!isValid) {
@@ -39,30 +46,27 @@ exports.login = async (req, res, next) => {
 }
 
 exports.signup = async (req, res, next) => {
-    const { name, email, password } = req.body;
-    let user = await authRepository.findOne({ email });
-    if (user) {
+    const { email, password } = req.body;
+    const name = email.split("@")[0];
+    let auth = await authRepository.findOne({ email });
+    if (auth) {
         return res.status(Http.BadRequest).json({
             message: "User already exists. Please login."
         });
     }
-    if (!user.verified) {
-        return res.status(Http.Forbidden).json({
-            error: "Please verify your account!"
-        });
-    }
+
     // Encrypt user password
     const hashedPassword = await bcrypt.hash(password, 10);
-    user = await authRepository.create({
+    auth = await authRepository.create({
         email,
         password: hashedPassword
     });
 
-    console.log("Created user: ", user);
+    console.log("Created user: ", auth);
     Emitter.emit(EMIT.USER.CREATED, { name, email });
     res.json({
         message: "User created",
-        data: user
+        data: auth
     });
 }
 
@@ -75,14 +79,14 @@ exports.code = async (req, res, next) => {
 }
 
 exports.verify = async (req, res, next) => {
-    const userId = req.params.userId;
-    if (!userId) {
+    const authId = req.params.authId;
+    if (!authId) {
         return res.status(Http.BadRequest).json({
             "error": "User with this id does not exist"
         });
     }
 
-   await userRepository.update({ userId: userId }, {
+    await authRepository.update({ uuid: authId }, {
         verified: true
     });
 
