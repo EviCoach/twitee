@@ -16,6 +16,7 @@ exports.add = async (req, res, next) => {
         });
     } catch (err) {
         console.log("Error commenting on this post", err)
+        throw new Error(err);
     }
 }
 

@@ -46,28 +46,34 @@ exports.login = async (req, res, next) => {
 }
 
 exports.signup = async (req, res, next) => {
-    const { email, password } = req.body;
-    const name = email.split("@")[0];
-    let auth = await authRepository.findOne({ email });
-    if (auth) {
-        return res.status(Http.BadRequest).json({
-            message: "User already exists. Please login."
+    try {
+
+
+        const { email, password } = req.body;
+        const name = email.split("@")[0];
+        let auth = await authRepository.findOne({ email });
+        if (auth) {
+            return res.status(Http.BadRequest).json({
+                message: "User already exists. Please login."
+            });
+        }
+
+        // Encrypt user password
+        const hashedPassword = await bcrypt.hash(password, 10);
+        auth = await authRepository.create({
+            email,
+            password: hashedPassword
         });
+
+        console.log("Created user: ", auth);
+        Emitter.emit(EMIT.USER.CREATED, { name, email });
+        res.json({
+            message: "User created",
+            data: auth
+        });
+    } catch (err) {
+        throw new Error(err);
     }
-
-    // Encrypt user password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    auth = await authRepository.create({
-        email,
-        password: hashedPassword
-    });
-
-    console.log("Created user: ", auth);
-    Emitter.emit(EMIT.USER.CREATED, { name, email });
-    res.json({
-        message: "User created",
-        data: auth
-    });
 }
 
 exports.reset = async (req, res, next) => {
@@ -80,17 +86,23 @@ exports.code = async (req, res, next) => {
 
 exports.verify = async (req, res, next) => {
     const authId = req.params.authId;
-    if (!authId) {
-        return res.status(Http.BadRequest).json({
-            "error": "User with this id does not exist"
+    try {
+
+
+        if (!authId) {
+            return res.status(Http.BadRequest).json({
+                "error": "User with this id does not exist"
+            });
+        }
+
+        await authRepository.update({ uuid: authId }, {
+            verified: true
         });
+
+        return res.json({
+            message: "User verified successfully",
+        });
+    } catch (err) {
+        throw new Error(err);
     }
-
-    await authRepository.update({ uuid: authId }, {
-        verified: true
-    });
-
-    return res.json({
-        message: "User verified successfully",
-    });
 }
