@@ -1,12 +1,12 @@
 {
-  "developments": {
+  "development": {
     "username": "hencjotg",
     "password": "f4SVbEvSmbahBJxl-XVGGBJCri-ofTlK",
     "database": "hencjotg",
     "host": "rogue.db.elephantsql.com",
     "dialect": "postgres"
   },
-  "development": {
+  "developments": {
     "username": null,
     "password": null,
     "database": "twitee",
@@ -21,10 +21,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "hencjotg",
+    "password": "f4SVbEvSmbahBJxl-XVGGBJCri-ofTlK",
+    "database": "hencjotg",
+    "host": "rogue.db.elephantsql.com",
+    "dialect": "postgres"
   }
 }
